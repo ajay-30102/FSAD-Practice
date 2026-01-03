@@ -1,0 +1,5 @@
+package com.fsads52.jdbc;
+
+public class CreateTable {
+
+}

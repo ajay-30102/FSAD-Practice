@@ -1,0 +1,37 @@
+package bank;
+
+public class IntrestCaluculator {
+private static double principle;
+private static double years;
+private static double roi;
+private static double choice;
+ //methos
+public static void setPrinciple(double p) {
+	principle = (p>=100000 && p<=50000)?p:0;	
+}
+public static void setYears(double y) {
+	years = (y>=2 && y<=10)?y:0;
+}
+public static void setROI(double r) {
+	roi =(r>=5 && r<=15)?r:0;
+}
+private static void setchoice(String s) {
+	choice = (s.toLowerCase().equals("simple") || s.toLowerCase.equals("compound"))?s:"unknown";
+}
+private static double calcSimpleIntrest() {
+	return principle*years*roi/100;
+}
+private static double calcCompoundIntrest() {
+	return principle*Math.pow((1+roi/100),years)-principle;
+}
+public static double calcIntrest(String c) {
+	double intrest;
+	switch(c.toLowerCase()) {
+	case "SIMPLE":return calcSimpleIntrest();
+	case "COMPOUND":return calcCompoundIntrest();
+	default:return 0;
+	
+	
+	}
+}
+}

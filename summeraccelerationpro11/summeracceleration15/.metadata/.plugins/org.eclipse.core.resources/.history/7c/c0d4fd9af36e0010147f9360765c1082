@@ -1,0 +1,155 @@
+import java.io.*; 
+import java.util.*; 
+
+public class CollaborativeEventCatering { 
+
+    static class Event implements Serializable { 
+        String name; 
+        Date startDate; 
+        Date endDate; 
+        List<Guest> guests = new ArrayList<>(); 
+        double budget; 
+
+        public Event(String name) { 
+            this.name = name; 
+        } 
+    } 
+
+    static class Guest implements Serializable { 
+        String name; 
+        String contactInfo; 
+        boolean rsvp; 
+
+        public Guest(String name) { 
+            this.name = name; 
+        } 
+    } 
+
+    static class EventService { 
+        List<Event> events = new ArrayList<>(); 
+
+        public void createEvent(Scanner sc) { 
+            System.out.print("Enter event name: "); 
+            String name = sc.nextLine(); 
+            Event e = new Event(name); 
+            events.add(e); 
+            System.out.println("Event created: " + name); 
+        } 
+
+        public void listEvents() { 
+            if (events.isEmpty()) { 
+                System.out.println("No events created."); 
+            } else { 
+                for (int i = 0; i < events.size(); i++) { 
+                    System.out.println((i+1) + ". " + events.get(i).name); 
+                } 
+            } 
+        } 
+    } 
+
+    static class GuestService { 
+        public void addGuest(Scanner sc, Event event) { 
+            System.out.print("Enter guest name: "); 
+            String name = sc.nextLine(); 
+            Guest g = new Guest(name); 
+            event.guests.add(g); 
+            System.out.println("Guest added to event: " + name); 
+        } 
+
+        public void listGuests(Event event) { 
+            if (event.guests.isEmpty()) { 
+                System.out.println("No guests added yet."); 
+            } else { 
+                for (int i = 0; i < event.guests.size(); i++) { 
+                    System.out.println((i+1) + ". " + event.guests.get(i).name); 
+                } 
+            } 
+        } 
+    } 
+
+    static class EventDAO { 
+        private static final String FILE = "events.dat"; 
+
+        public void save(List<Event> events) { 
+            try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(FILE))) { 
+                out.writeObject(events); 
+                System.out.println("Events saved."); 
+            } catch (IOException e) { 
+                e.printStackTrace(); 
+            } 
+        } 
+
+        public List<Event> load() { 
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(FILE))) { 
+                return (List<Event>) in.readObject(); 
+            } catch (Exception e) { 
+                return new ArrayList<>(); 
+            } 
+        } 
+    } 
+
+    public static void main(String[] args) { 
+        Scanner sc = new Scanner(System.in); 
+        EventService eventService = new EventService(); 
+        GuestService guestService = new GuestService(); 
+        EventDAO dao = new EventDAO(); 
+
+        eventService.events = dao.load(); 
+
+        while (true) { 
+            System.out.println("\n==== Collaborative Event Catering ===="); 
+            System.out.println("1. Create New Event"); 
+            System.out.println("2. List Events"); 
+            System.out.println("3. Add Guest to Event"); 
+            System.out.println("4. List Guests of Event"); 
+            System.out.println("5. Save Events"); 
+            System.out.println("0. Exit"); 
+            System.out.print("Enter your choice: "); 
+            String input = sc.nextLine(); 
+            switch (input) { 
+                case "1": 
+                    eventService.createEvent(sc); 
+                    break; 
+                case "2": 
+                    eventService.listEvents(); 
+                    break; 
+                case "3": 
+                    if (eventService.events.isEmpty()) { 
+                        System.out.println("No events created yet."); 
+                    } else { 
+                        eventService.listEvents(); 
+                        System.out.print("Choose event number: "); 
+                        int num = Integer.parseInt(sc.nextLine()); 
+                        if (num >= 1 && num <= eventService.events.size()) { 
+                            guestService.addGuest(sc, eventService.events.get(num-1)); 
+                        } else { 
+                            System.out.println("Invalid choice."); 
+                        } 
+                    } 
+                    break; 
+                case "4": 
+                    if (eventService.events.isEmpty()) { 
+                        System.out.println("No events created yet."); 
+                    } else { 
+                        eventService.listEvents(); 
+                        System.out.print("Choose event number: "); 
+                        int num = Integer.parseInt(sc.nextLine()); 
+                        if (num >= 1 && num <= eventService.events.size()) { 
+                            guestService.listGuests(eventService.events.get(num-1)); 
+                        } else { 
+                            System.out.println("Invalid choice."); 
+                        } 
+                    } 
+                    break; 
+                case "5": 
+                    dao.save(eventService.events); 
+                    break; 
+                case "0": 
+                    System.out.println("Goodbye!"); 
+                    return; 
+                default: 
+                    System.out.println("Invalid choice."); 
+            } 
+        } 
+    } 
+}

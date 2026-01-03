@@ -1,0 +1,46 @@
+package package2;
+import package1.Twodshape;
+
+public class Rectangle extends Twodshape {
+	
+	private double d2;
+	
+	public double getD2() {
+		return this.d2;
+	}
+	
+	public void setD2(double d2) {
+		this.d2=(d2>0 && d2<=200)?d2:0;
+	}
+	
+	public double calcArea() {
+		return this.d2*this.d1;
+	}
+	
+	public double calperi() {
+		return 2*(this.d1+this.d2);
+		
+	}
+	
+	public String getName() {
+		return "Rectangle";
+	}
+	
+//public void setD1(double d1) - inherited and NOT overridden
+//public void printDetails() - inherited and NOT overridden 
+	// public double getD1() - inherited and NOT overridden 
+	//constructor 
+	private Rectangle() {
+		super();
+		this.d2=0;
+	}
+	
+	public Rectangle(double d1,double d2) {
+		super();
+		this.setD2(d2);
+	}
+	public void printDetails() { 
+		System.out.println("My perimeter = "+this.calcperi());
+		System.out.println("My Area ="+this.calcperi());
+	}
+}

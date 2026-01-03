@@ -1,0 +1,31 @@
+package ajay;
+import java.util.Queue;
+import java.util.LinkedList;
+
+
+public class buffer {
+	private final Queue<Integer> b;
+	private final int maxSize;
+	
+	public buffer(int mSize) {
+		b = new LinkedList<Integer>();
+		maxSize = mSize;
+	}
+	public void produce (int e) {
+		while(b.size()==maxSize) {
+			System.out.println("Buffer is full");
+		}
+		b.add(e);
+		System.out.println("Produced : "+e);
+	}
+	public int consume() {
+		while(b.size()==0) {
+			System.out.println("Buffer is Empty");
+		}
+		int e=b.poll();
+		System.out.println("Consumed : "+e);
+		return e;
+		
+	}
+
+}

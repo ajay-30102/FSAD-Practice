@@ -1,0 +1,95 @@
+import java.io.*;
+import java.util.*;
+
+public class CollaborativeEventCatering {
+
+    static class Event implements Serializable {
+        String name;
+        List<Guest> guests = new ArrayList<>();
+        public Event(String name) { this.name = name; }
+    }
+
+    static class Guest implements Serializable {
+        String name;
+        public Guest(String name) { this.name = name; }
+    }
+
+    static class EventService {
+        List<Event> events = new ArrayList<>();
+        public void createEvent(Scanner sc) {
+            System.out.print("Enter event name: ");
+            String name = sc.nextLine();
+            events.add(new Event(name));
+            System.out.println("Event created: " + name);
+        }
+        public void listEvents() {
+            if (events.isEmpty()) System.out.println("No events.");
+            else for (int i=0;i<events.size();i++)
+                System.out.println((i+1)+". "+events.get(i).name);
+        }
+    }
+
+    static class GuestService {
+        public void addGuest(Scanner sc, Event e) {
+            System.out.print("Enter guest name: ");
+            e.guests.add(new Guest(sc.nextLine()));
+            System.out.println("Guest added.");
+        }
+        public void listGuests(Event e) {
+            if (e.guests.isEmpty()) System.out.println("No guests.");
+            else for (int i=0;i<e.guests.size();i++)
+                System.out.println((i+1)+". "+e.guests.get(i).name);
+        }
+    }
+
+    static class EventDAO {
+        private static final String FILE = "events.dat";
+        public void save(List<Event> events) {
+            try(ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(FILE))){
+                out.writeObject(events);
+                System.out.println("Events saved.");
+            }catch(IOException e){e.printStackTrace();}
+        }
+        public List<Event> load() {
+            try(ObjectInputStream in=new ObjectInputStream(new FileInputStream(FILE))){
+                return (List<Event>)in.readObject();
+            }catch(Exception e){ return new ArrayList<>(); }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        EventService es = new EventService();
+        GuestService gs = new GuestService();
+        EventDAO dao = new EventDAO();
+        es.events = dao.load();
+
+        while (true) {
+            System.out.println("\n==== Collaborative Event Catering ====");
+            System.out.println("1. Create Event\n2. List Events\n3. Add Guest\n4. List Guests\n5. Save\n0. Exit");
+            System.out.print("Choice: ");
+            String input = sc.nextLine();
+            switch(input){
+                case "1": es.createEvent(sc); break;
+                case "2": es.listEvents(); break;
+                case "3":
+                    es.listEvents();
+                    System.out.print("Event #: ");
+                    int n=Integer.parseInt(sc.nextLine());
+                    if(n>=1&&n<=es.events.size()) gs.addGuest(sc, es.events.get(n-1));
+                    else System.out.println("Invalid.");
+                    break;
+                case "4":
+                    es.listEvents();
+                    System.out.print("Event #: ");
+                    n=Integer.parseInt(sc.nextLine());
+                    if(n>=1&&n<=es.events.size()) gs.listGuests(es.events.get(n-1));
+                    else System.out.println("Invalid.");
+                    break;
+                case "5": dao.save(es.events); break;
+                case "0": System.out.println("Bye!"); return;
+                default: System.out.println("Invalid choice.");
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+package client;
+import bank.IntrestCaluculator;
+public class MianApp {
+	public static void main(String[] args) {
+		IntrestCaluculator.setPrinciple(200000);
+		IntrestCaluculator.setYears(5.5);
+		IntrestCaluculator.setROI(6);
+		double intrest = IntrestCaluculator.calcIntrest("Simple");
+		System.out.print("Simple Intrest = Rs.%.2f%n",intrest);
+	}
+}

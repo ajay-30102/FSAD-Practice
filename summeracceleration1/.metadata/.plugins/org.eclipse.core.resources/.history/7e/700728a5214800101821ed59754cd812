@@ -1,0 +1,11 @@
+package client;
+import collection.Circlecollection;
+import shape.*;
+
+public class MainApp {
+	public static void main(String[] args) {
+		Circlecollection cc1 = new CircleCollection();
+		scanner sc = new Scanner(ystem.in);
+	}
+
+}
