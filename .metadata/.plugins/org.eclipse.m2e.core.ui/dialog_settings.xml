@@ -2,6 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="C:\Users\Ajay Krishna\eclipse-workspace\FSADEXPERIMENT2"/>
 			<item value="C:\Users\Ajay Krishna\eclipse-workspace\jdbc-create"/>
 			<item value="C:\Users\Ajay Krishna\eclipse-workspace\hibernate-crud-demo"/>
 		</list>
@@ -26,10 +27,8 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
-			<item value="fsad_53"/>
 		</list>
 		<list key="groupId">
-			<item value="fsad-53"/>
 		</list>
 		<list key="artifactId">
 		</list>
@@ -47,11 +46,17 @@
 	</section>
 	<section name="MavenProjectWizardArtifactPage">
 		<list key="groupId">
+			<item value="com.example"/>
+			<item value="com.fsadS52"/>
+			<item value="com.create"/>
 			<item value="fsad-53"/>
 		</list>
 		<list key="name">
 		</list>
 		<list key="artifactId">
+			<item value="FSADEXPERIMENT3"/>
+			<item value="FSADEXPERIMENT2"/>
+			<item value="hibernate-create"/>
 			<item value="hibernate-crud-demo"/>
 		</list>
 		<list key="projectNameTemplate">
